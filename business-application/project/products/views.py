@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import Category, Product
+from .forms import ProductForm
+from django.contrib import messages
 
 def category_list(request):
     categories = Category.objects.all()
@@ -21,15 +23,26 @@ def product_list(request):
     return render(request, 'product_list.html', {'products': products})
 
 def add_product(request):
-    categories = Category.objects.all()
-
     if request.method == 'POST':
-        pass
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('product_list')
+    
     else:
-        return render(request, 'add_product.html', {'categories': categories})
+        form = ProductForm()
+    return render(request, 'add_product.html', {'form': form})
 
 def add_category(request):
     pass
 
 def welcome(request):
     return render(request, 'welcome.html')
+
+def purchase_product(request, product_id, quantity):
+    product = Product.objects.get(pk=product_id)
+    if product.reduce_inventory(quantity):
+        messages.sucess(request, 'Purchased successfully')
+    else:
+        messages.error(request, 'This item has run out of inventory')
+    return redirect('product_list')
