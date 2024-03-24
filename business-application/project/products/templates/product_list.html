@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product List</title>
-    <link rel="stylesheet" href="product_list.css">
+    <link rel="stylesheet" href="{% static 'product_list.css' %}">
 </head>
 <body>
     <h1>Product List</h1>
@@ -20,10 +21,41 @@
                     <h3>{{ product.name }}</h3>
                     <p class="product-price">Price: ${{ product.price }}</p>
                     <p>Available: {{ product.inventory }}</p>
-                    <button class="add-to-cart-btn">Add to Cart</button>
+                    <div>
+                        <button class="add-to-cart-btn" onclick="addToCart(`{{product.id}}`)">Add to Cart</button>
+                        <select class="quantity-selector" data-product-id="{{ product.id }}" data-inventory="{{ product.inventory }}">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         {% endfor %}
     </div>
+    <a href="{% url 'cart' %}"><button>Cart</button></a>
+    <script>
+        function addToCart(productId){
+            const selectQuantity = document.querySelector(`.quantity-selector[data-product-id="${productId}"]`);
+            const quantity = parseInt(selectQuantity.value);
+
+            console.log('Product ID:', productId);
+            console.log('Quantity:', quantity);
+
+            fetch(`/add-to-cart/${productId}/${quantity}/`)
+                .then(response => {
+                    if(response.ok){
+                        alert('Product added to cart successfully');
+                    } else {
+                        alert('Failed to add product to cart');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
 </body>
 </html>
