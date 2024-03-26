@@ -27,8 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SECURE_SSL_REDIRECT = False
 
 # Application definition
+
+SITE_ID = 2
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -38,7 +41,25 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'products',
+    'social_django',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "SCOPE": [
+            "profile",
+            "email"
+        ],
+        "AUTH_PARAMS": {"access_type": "online"}
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -48,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -84,6 +106,8 @@ DATABASES = {
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+STRIPE_PUBLIC_KEY = 'pk_live_51Oc5hfL9lng4HNss1av8osECrGjm66dmyjSiIr6nK5OSx29GDtPnD7kwGNQJEivnkMKlp61PCyAIfcVco1LLDoMd00jA1JFK9k'
+STRIPE_SECRET_KEY = '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'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -125,3 +149,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend"
+)
+
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"

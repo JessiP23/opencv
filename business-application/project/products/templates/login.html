@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    {% load socialaccount %}
+    <h2>Google Login</h2>
+    <a href="{% provider_login_url  'google' %}?next=/welcome/">Login With Google</a>
+    <div id="g_id_onload"
+        data-client_id="710903278625-rhg4al0sdfmfdn6l0v5jeqeomoupnkfa.apps.googleusercontent.com"
+        data-context="signin"
+        data-ux_mode="popup"
+        data-login_uri="http://localhost:8000/welcome/"
+        data-itp_support="true">
+    </div>
+
+    <div class="g_id_signin"
+        data-type="standard"
+        data-shape="pill"
+        data-theme="outline"
+        data-text="signin_with"
+        data-size="large"
+        data-logo_alignment="left">
+    </div>
+
+    {% if user.is_authenticated %}
+    <script>window.location.href = "{% url 'welcome' %}"</script>
+    {% else %}
+    <p>You are not signed in.</p>
+    {% endif %}
+</body>
+</html>

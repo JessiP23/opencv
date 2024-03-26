@@ -36,6 +36,7 @@
         {% endfor %}
     </div>
     <a href="{% url 'cart' %}"><button>Cart</button></a>
+    <a href="{% url 'welcome' %}"><button>Go Back</button></a>
     <script>
         function addToCart(productId){
             const selectQuantity = document.querySelector(`.quantity-selector[data-product-id="${productId}"]`);

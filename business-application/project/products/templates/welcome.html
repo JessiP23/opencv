@@ -7,6 +7,7 @@
 </head>
 <body>
     <h1>Welcome to the application</h1>
+    <button onclick="window.location=`{% url 'logout_view' %}`">Logout</button>
     <button onclick="window.location=`{% url 'add_product' %}`">Add Product</button>
     <button onclick="window.location=`{% url 'product_list' %}`">View Products</button>
 </body>

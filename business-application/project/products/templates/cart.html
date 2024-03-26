@@ -13,9 +13,15 @@
                 <h3>{{ item.product.name }}</h3>
                 <p>Price: ${{ item.product.price }}</p>
                 <p>Quantity: {{ item.quantity }}</p>
+                <form action="{% url 'remove_from_cart' item.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Remove</button>
+                </form>
             </div>
         {% endfor %}
     </div>
     <p>Total Price: ${{ total_price }}</p>
+    <a href="{% url 'product_list' %}"><button>Return to Inventory</button></a>
+    <a href="{% url 'checkout' %}"><button>Proceed to checkout</button></a>
 </body>
 </html>
