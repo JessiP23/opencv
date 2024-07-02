@@ -49,7 +49,7 @@ def process_image(image_path, output_path):
     return mask_path, processed_image_path
 
 # Example usage
-input_image_path = 'images/room.jpg'
+input_image_path = 'images/room.png'
 output_directory = 'output'
 
 mask_path, processed_image_path = process_image(input_image_path, output_directory)
